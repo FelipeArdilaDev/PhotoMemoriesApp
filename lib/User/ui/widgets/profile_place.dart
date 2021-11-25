@@ -3,10 +3,9 @@ import 'package:flutter_app/Place/model/place.dart';
 import 'package:flutter_app/User/ui/widgets/profile_place_info.dart';
 
 class ProfilePlace extends StatelessWidget {
-  String image;
   Place place;
 
-  ProfilePlace(this.image, this.place);
+  ProfilePlace(this.place);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +13,8 @@ class ProfilePlace extends StatelessWidget {
       margin: EdgeInsets.only(top: 10.0, bottom: 70.0),
       height: 220.0,
       decoration: BoxDecoration(
-          image: DecorationImage(fit: BoxFit.cover, image: AssetImage(image)),
+          image: DecorationImage(
+              fit: BoxFit.cover, image: NetworkImage(place.urlImage)),
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           color: Colors.red,
           boxShadow: <BoxShadow>[
