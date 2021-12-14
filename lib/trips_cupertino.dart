@@ -10,29 +10,28 @@ class TripsCupertino extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: todo
-    // TODO: implement build
     return Scaffold(
       bottomNavigationBar: CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-            backgroundColor: Colors.white.withAlpha(10),
+            backgroundColor: Colors.white.withAlpha(70),
             items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.home, color: Colors.white54),
+                  icon: Icon(Icons.home, color: Colors.lightBlueAccent),
                   activeIcon: Icon(
                     Icons.home,
-                    color: Color(0xCFF584CD1),
+                    color: Colors.indigo,
                   )),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search, color: Colors.white54),
+                  icon: Icon(Icons.search, color: Colors.lightBlueAccent),
                   activeIcon: Icon(
                     Icons.search,
-                    color: Color(0xCFF584CD1),
+                    color: Colors.indigo,
                   )),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person, color: Colors.white54),
+                  icon: Icon(Icons.person, color: Colors.lightBlueAccent),
                   activeIcon: Icon(
                     Icons.person,
-                    color: Color(0xCFF584CD1),
+                    color: Colors.indigo,
                   ))
             ]),
         tabBuilder: (BuildContext context, int index) {

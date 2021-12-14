@@ -1,24 +1,35 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../Widgets/floating_action_button_green.dart';
 
-class CardImage extends StatelessWidget {
-  String pathimage = "assets/img/imagend.jpeg";
+class CardImageWithFabIcon extends StatelessWidget {
+  final double height;
+  final double width;
+  double left;
+  final File? pathImage;
+  final VoidCallback onPressedFabIcon;
+  final IconData iconData;
 
-  CardImage(this.pathimage);
+  CardImageWithFabIcon(
+      {Key? key,
+      this.pathImage,
+      required this.width,
+      required this.height,
+      required this.onPressedFabIcon,
+      required this.iconData,
+      this.left = 0});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     final card = Container(
-      height: 350.0,
-      width: 250.0,
-      margin: EdgeInsets.only(top: 80.0, left: 20.0),
+      height: height,
+      width: width,
+      margin: EdgeInsets.only(top: 80.0, left: left),
       decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage(pathimage),
+            image: FileImage(pathImage!),
           ),
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           shape: BoxShape.rectangle,
@@ -31,7 +42,13 @@ class CardImage extends StatelessWidget {
     );
     return Stack(
       alignment: Alignment(0.9, 1.1),
-      children: [card, FloatingActionButtonGreen()],
+      children: [
+        card,
+        FloatingActionButtonGreen(
+          iconData: iconData,
+          onPressed: onPressedFabIcon,
+        )
+      ],
     );
   }
 }

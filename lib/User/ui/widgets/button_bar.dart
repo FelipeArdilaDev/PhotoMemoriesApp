@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Place/ui/screens/add_place_screen.dart';
 import 'package:flutter_app/User/bloc/bloc_user.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'circle_button.dart';
 
 class ButtonsBar extends StatelessWidget {
+  final picker = ImagePicker();
   UserBloc userBloc = new UserBloc();
   @override
   Widget build(BuildContext context) {
@@ -21,13 +23,15 @@ class ButtonsBar extends StatelessWidget {
             //Añadirremos un nuevo lugar
             CircleButton(
                 false, Icons.add, 40.0, Color.fromRGBO(255, 255, 255, 1), () {
-              File? image;
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => AddPlaceScreen(
-                            image: image,
-                          )));
+              picker
+                  .getImage(source: ImageSource.camera)
+                  .then((PickedFile image) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            AddPlaceScreen(image: File(image.path))));
+              }).catchError((onError) => print(onError));
             }),
             //Cerrar Sesion
             CircleButton(true, Icons.exit_to_app, 20.0,

@@ -45,16 +45,16 @@ class _Trips extends State<Trips> {
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.home,
-                  color: Colors.indigo,
+                  color: Colors.deepOrange,
                 ),
                 label: "",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.search, color: Colors.indigo),
+                icon: Icon(Icons.search, color: Colors.deepOrange),
                 label: "",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person, color: Colors.indigo),
+                icon: Icon(Icons.person, color: Colors.deepOrange),
                 label: "",
               ),
             ],
