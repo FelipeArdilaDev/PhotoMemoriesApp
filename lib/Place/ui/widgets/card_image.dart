@@ -7,17 +7,19 @@ class CardImageWithFabIcon extends StatelessWidget {
   final double height;
   final double width;
   double left;
-  final File? pathImage;
+  final String pathImage;
   final VoidCallback onPressedFabIcon;
   final IconData iconData;
+  bool internet;
 
   CardImageWithFabIcon(
       {Key? key,
-      this.pathImage,
+      required this.pathImage,
       required this.width,
       required this.height,
       required this.onPressedFabIcon,
       required this.iconData,
+      this.internet = true,
       this.left = 0});
 
   @override
@@ -29,7 +31,7 @@ class CardImageWithFabIcon extends StatelessWidget {
       decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: FileImage(pathImage!),
+            image: NetworkImage(pathImage),
           ),
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           shape: BoxShape.rectangle,

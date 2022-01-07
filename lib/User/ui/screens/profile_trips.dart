@@ -61,7 +61,7 @@ class ProfileTrips extends StatelessWidget {
     } else {
       print("Logeado");
       var user = User(
-          Uid: snapshot.data.uid,
+          uid: snapshot.data.uid,
           name: snapshot.data.displayName,
           email: snapshot.data.email,
           photoURL: snapshot.data.photoUrl);

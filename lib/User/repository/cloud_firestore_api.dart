@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app/Place/model/place.dart';
+import 'package:flutter_app/Place/ui/widgets/card_image.dart';
 import 'package:flutter_app/User/model/user.dart';
 import 'package:flutter_app/User/ui/widgets/profile_place.dart';
 
@@ -12,9 +15,9 @@ class CloudFirestoreAPI {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void updateUserData(User user) async {
-    DocumentReference ref = _db.collection(USERS).document(user.Uid);
+    DocumentReference ref = _db.collection(USERS).document(user.uid);
     return await ref.setData({
-      'uid': user.Uid,
+      'uid': user.uid,
       'name': user.name,
       'email': user.email,
       'photoURL': user.photoURL,
@@ -45,7 +48,7 @@ class CloudFirestoreAPI {
     });
   }
 
-  List<ProfilePlace> buildPlaces(List<DocumentSnapshot> placesListSnapshot) {
+  List<ProfilePlace> buildMyPlaces(List<DocumentSnapshot> placesListSnapshot) {
     List<ProfilePlace> profilePlaces = <ProfilePlace>[];
     placesListSnapshot.forEach((p) {
       profilePlaces.add(ProfilePlace(
@@ -57,5 +60,45 @@ class CloudFirestoreAPI {
       ));
     });
     return profilePlaces;
+  }
+
+  List<Place> buildPlaces(
+      List<DocumentSnapshot> placesListSnapshot, User user) {
+    List<Place> places = <Place>[];
+
+    placesListSnapshot.forEach((p) {
+      Place place = Place(
+          id: p.documentID,
+          name: p.data["name"],
+          description: p.data["description"],
+          urlImage: p.data["urlImage"],
+          likes: p.data["likes"]);
+      List usersLikedRefs = p.data["usersLiked"];
+      place.liked = false;
+      usersLikedRefs?.forEach((drUL) {
+        if (user.uid == drUL.documentID) {
+          place.liked = true;
+        }
+      });
+      places.add(place);
+    });
+    return places;
+  }
+
+  Future likePlace(Place place, String uid) async {
+    await _db
+        .collection(PLACES)
+        .document(place.id)
+        .get()
+        .then((DocumentSnapshot ds) {
+      int likes = ds.data["likes"];
+
+      _db.collection(PLACES).document(place.id).updateData({
+        'likes': place.liked ? likes + 1 : likes - 1,
+        'usersLiked': place.liked
+            ? FieldValue.arrayUnion([_db.document("${USERS}/${uid}")])
+            : FieldValue.arrayRemove([_db.document("${USERS}/${uid}")])
+      });
+    });
   }
 }

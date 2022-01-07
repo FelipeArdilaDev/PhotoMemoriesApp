@@ -61,7 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     userBloc.signOut();
                     userBloc.signIn().then((FirebaseUser user) {
                       userBloc.updateUserData(User(
-                          Uid: user.uid,
+                          uid: user.uid,
                           name: user.displayName,
                           email: user.email,
                           photoURL: user.photoUrl));

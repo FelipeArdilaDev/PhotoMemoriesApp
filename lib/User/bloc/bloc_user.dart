@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_app/Place/model/place.dart';
 import 'package:flutter_app/Place/repository/firebase_storage_repository.dart';
+import 'package:flutter_app/Place/ui/widgets/card_image.dart';
 import 'package:flutter_app/User/model/user.dart';
 import 'package:flutter_app/User/repository/auth_repository.dart';
 import 'package:flutter_app/User/repository/cloud_firestore_api.dart';
@@ -36,8 +37,11 @@ class UserBloc implements Bloc {
   Stream<QuerySnapshot> placesListStream =
       Firestore.instance.collection(CloudFirestoreAPI().PLACES).snapshots();
   Stream<QuerySnapshot> get placesStream => placesListStream;
-  List<ProfilePlace> buildPlaces(List<DocumentSnapshot> placesListSnapshot) =>
-      _cloudFirestoreRepository.buildPlaces(placesListSnapshot);
+  List<Place> buildPlaces(
+          List<DocumentSnapshot> placesListSnapshot, User user) =>
+      _cloudFirestoreRepository.buildPlaces(placesListSnapshot, user);
+  Future likePlace(Place place, String uid) =>
+      _cloudFirestoreRepository.likePlace(place, uid);
 
   Stream<QuerySnapshot> myPlacesListStream(String uid) => Firestore.instance
       .collection(CloudFirestoreAPI().PLACES)
@@ -45,6 +49,8 @@ class UserBloc implements Bloc {
           isEqualTo: Firestore.instance
               .document("${CloudFirestoreAPI().USERS}/${uid}"))
       .snapshots();
+  List<ProfilePlace> buildMyPlaces(List<DocumentSnapshot> placesListSnapshot) =>
+      _cloudFirestoreRepository.buildMyPlaces(placesListSnapshot);
 
   final _firebaseStorageRepository = FirebaseStorageRepository();
   Future<StorageUploadTask> uploadFile(String path, File image) =>

@@ -31,27 +31,26 @@ class ProfilePlacesList extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
       child: StreamBuilder(
-          stream: userBloc.myPlacesListStream(user.Uid),
+          stream: userBloc.myPlacesListStream(user.uid),
           builder: (context, AsyncSnapshot snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
+                return CircularProgressIndicator();
+              case ConnectionState.done:
+                return Column(
+                    children: userBloc.buildMyPlaces(snapshot.data.documents));
+
+              case ConnectionState.active:
+                return Column(
+                    children: userBloc.buildMyPlaces(snapshot.data.documents));
+
               case ConnectionState.none:
-                return new CircularProgressIndicator();
+                return CircularProgressIndicator();
               default:
                 return Column(
-                  children: userBloc.buildPlaces(snapshot.data.documents),
-                );
+                    children: userBloc.buildMyPlaces(snapshot.data.documents));
             }
           }),
     );
   }
-
-  /**
-   * Column(
-        children: <Widget>[
-          ProfilePlace(place),
-          ProfilePlace(place2),
-        ],
-      ),
-   */
 }

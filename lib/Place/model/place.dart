@@ -5,15 +5,18 @@ class Place {
   String name;
   String description;
   String urlImage;
-  int? likes;
-  //User? userOwner;
+  int likes = 0;
+  bool liked;
+  //User userOwner;
 
-  Place({
-    Key? key,
-    required this.name,
-    required this.description,
-    required this.urlImage,
-    this.likes,
-    //@required this.userOwner,
-  });
+  Place(
+      {Key? key,
+      required this.name,
+      required this.description,
+      required this.urlImage,
+      required this.likes,
+      this.liked = false,
+      this.id
+      //@required this.userOwner
+      });
 }

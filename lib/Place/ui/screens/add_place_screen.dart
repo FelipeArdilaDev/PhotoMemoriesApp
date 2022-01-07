@@ -65,7 +65,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
               Container(
                 alignment: Alignment.center,
                 child: CardImageWithFabIcon(
-                    pathImage: widget.image, //widget.image.path
+                    pathImage: widget.image.path, //widget.image.path
                     iconData: Icons.camera_alt,
                     width: 350.0,
                     height: 250.0,

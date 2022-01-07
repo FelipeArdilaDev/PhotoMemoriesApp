@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Place/model/place.dart';
 
 class User {
-  final String Uid;
+  final String uid;
   final String name;
   final String email;
   final String photoURL;
@@ -14,7 +14,7 @@ class User {
 
   User(
       {Key? key,
-      @required this.Uid = "",
+      @required this.uid = "",
       required this.name,
       required this.email,
       required this.photoURL,
