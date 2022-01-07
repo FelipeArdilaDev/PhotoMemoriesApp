@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/Place/model/place.dart';
 import 'package:flutter_app/User/model/user.dart';
+import 'package:flutter_app/User/ui/widgets/profile_place.dart';
 
 class CloudFirestoreAPI {
   final String USERS = "users";
@@ -25,14 +26,36 @@ class CloudFirestoreAPI {
 
   Future<void> updatePlaceData(Place place) async {
     CollectionReference refPlaces = _db.collection(PLACES);
-
-    await _auth.currentUser().then((FirebaseUser user) {
-      refPlaces.add({
-        'name': place.name,
-        'desciption': place.description,
-        'likes': place.likes,
-        'userOwner': "${USERS}/${user.uid}", //reference
+    String uid = (await _auth.currentUser()).uid;
+    await refPlaces.add({
+      'name': place.name,
+      'description': place.description,
+      'likes': place.likes,
+      'userOwner': _db.document("$USERS/$uid"), //reference
+      'urlImage': place.urlImage,
+    }).then((DocumentReference dr) {
+      dr.get().then((DocumentSnapshot snapshot) {
+        // ID place REFERENCIA ARRAY
+        DocumentReference refUsers = _db.collection(USERS).document(uid);
+        refUsers.updateData({
+          "myPlaces": FieldValue.arrayUnion(
+              [_db.document("$PLACES/${snapshot.documentID}")])
+        });
       });
     });
+  }
+
+  List<ProfilePlace> buildPlaces(List<DocumentSnapshot> placesListSnapshot) {
+    List<ProfilePlace> profilePlaces = <ProfilePlace>[];
+    placesListSnapshot.forEach((p) {
+      profilePlaces.add(ProfilePlace(
+        Place(
+            name: p.data["name"],
+            description: p.data["description"],
+            urlImage: p.data["urlImage"],
+            likes: p.data['likes']),
+      ));
+    });
+    return profilePlaces;
   }
 }

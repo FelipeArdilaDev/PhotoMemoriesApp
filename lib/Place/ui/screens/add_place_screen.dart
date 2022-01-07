@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Place/model/place.dart';
 import 'package:flutter_app/Place/ui/widgets/card_image.dart';
@@ -98,20 +100,38 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 child: ButtonPurple(
                   buttonText: "Agregar foto",
                   onPressed: () {
-                    //1. Firebase Storage
-                    //yrl -
+                    //ID del usuario logueado actualmente
+                    userBloc.currentUser.then((FirebaseUser user) {
+                      if (user != null) {
+                        String uid = user.uid;
+                        String path = "${uid}/${DateTime.now().toString()}.jpg";
+                        //1. Firebase Storage
+                        //yrl -
+                        userBloc
+                            .uploadFile(path, widget.image)
+                            .then((StorageUploadTask storageUploadTask) {
+                          storageUploadTask.onComplete
+                              .then((StorageTaskSnapshot snapshot) {
+                            snapshot.ref.getDownloadURL().then((urlImage) {
+                              print("URLIMAGE: ${urlImage}");
 
-                    //2. Cloud FIrestore
-                    //Place - titylo, descripcion, url, userOwner, likes
-                    userBloc
-                        .updatePlaceDate(Place(
-                            name: _controllerTitlePlace.text,
-                            description: _controllerDescriptionPlace.text,
-                            likes: 0,
-                            urlImage: "assets/img/imagens.jpeg"))
-                        .whenComplete(() {
-                      print("TERMINO");
-                      Navigator.pop(context);
+                              //2. Cloud FIrestore
+                              //Place - titylo, descripcion, url, userOwner, likes
+                              userBloc
+                                  .updatePlaceDate(Place(
+                                      name: _controllerTitlePlace.text,
+                                      description:
+                                          _controllerDescriptionPlace.text,
+                                      likes: 0,
+                                      urlImage: urlImage))
+                                  .whenComplete(() {
+                                print("TERMINO");
+                                Navigator.pop(context);
+                              });
+                            });
+                          });
+                        });
+                      }
                     });
                   },
                 ),
