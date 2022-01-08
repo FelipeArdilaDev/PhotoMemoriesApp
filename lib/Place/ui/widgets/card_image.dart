@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../Widgets/floating_action_button_green.dart';
@@ -30,10 +29,10 @@ class CardImageWithFabIcon extends StatelessWidget {
       margin: EdgeInsets.only(top: 80.0, left: left),
       decoration: BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover, image: CachedNetworkImageProvider(pathImage)),
+              fit: BoxFit.cover, image: NetworkImage(pathImage)),
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           shape: BoxShape.rectangle,
-          boxShadow: <BoxShadow>[
+          boxShadow: const <BoxShadow>[
             BoxShadow(
                 color: Colors.black38,
                 blurRadius: 15.0,

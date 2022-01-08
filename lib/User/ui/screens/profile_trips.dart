@@ -33,18 +33,6 @@ class ProfileTrips extends StatelessWidget {
         }
       },
     );
-
-    /*Stack(
-      children: <Widget>[
-        ProfileBackground(),
-        ListView(
-          children: <Widget>[
-            ProfileHeader(),//User datos
-            ProfilePlacesList()//User uid
-          ],
-        ),
-      ],
-    );*/
   }
 
   Widget showProfileData(AsyncSnapshot snapshot) {

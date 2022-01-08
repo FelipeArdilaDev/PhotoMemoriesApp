@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Place/model/place.dart';
 import 'package:flutter_app/Place/ui/widgets/card_image.dart';

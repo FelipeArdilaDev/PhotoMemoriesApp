@@ -39,7 +39,7 @@ class TripsCupertino extends StatelessWidget {
             case 0:
               return CupertinoTabView(
                 builder: (BuildContext context) {
-                  return BlocProvider(
+                  return BlocProvider<UserBloc>(
                     bloc: UserBloc(),
                     child: HomeTrips(),
                   );
