@@ -118,7 +118,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                               //2. Cloud FIrestore
                               //Place - titylo, descripcion, url, userOwner, likes
                               userBloc
-                                  .updatePlaceDate(Place(
+                                  .updatePlaceData(Place(
                                       name: _controllerTitlePlace.text,
                                       description:
                                           _controllerDescriptionPlace.text,

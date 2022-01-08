@@ -31,7 +31,7 @@ class ProfilePlacesList extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
       child: StreamBuilder(
-          stream: userBloc.myPlacesListStream(user.uid),
+          stream: userBloc.myPlacesListSream(user.uid),
           builder: (context, AsyncSnapshot snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:

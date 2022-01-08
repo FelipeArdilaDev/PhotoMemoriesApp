@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,26 +25,27 @@ class UserBloc implements Bloc {
   Stream<FirebaseUser> get authStatus => streamFirebase;
   Future<FirebaseUser> get currentUser => FirebaseAuth.instance.currentUser();
 
-  //Casos de uso
-  //1. SignIn a la aplicaion google
+  //Casos uso
+  //1. SignIn a la aplicación Google
   Future<FirebaseUser> signIn() => _auth_repository.signInFirebase();
 
   //2. Registrar usuario en base de datos
   final _cloudFirestoreRepository = CloudFirestoreRepository();
   void updateUserData(User user) =>
       _cloudFirestoreRepository.updateUserDataFirestore(user);
-  Future<void> updatePlaceDate(Place place) async =>
+  Future<void> updatePlaceData(Place place) =>
       _cloudFirestoreRepository.updatePlaceDate(place);
   Stream<QuerySnapshot> placesListStream =
       Firestore.instance.collection(CloudFirestoreAPI().PLACES).snapshots();
   Stream<QuerySnapshot> get placesStream => placesListStream;
+  //List<CardImageWithFabIcon> buildPlaces(List<DocumentSnapshot> placesListSnapshot) => _cloudFirestoreRepository.buildPlaces(placesListSnapshot);
   List<Place> buildPlaces(
           List<DocumentSnapshot> placesListSnapshot, User user) =>
       _cloudFirestoreRepository.buildPlaces(placesListSnapshot, user);
   Future likePlace(Place place, String uid) =>
       _cloudFirestoreRepository.likePlace(place, uid);
 
-  Stream<QuerySnapshot> myPlacesListStream(String uid) => Firestore.instance
+  Stream<QuerySnapshot> myPlacesListSream(String uid) => Firestore.instance
       .collection(CloudFirestoreAPI().PLACES)
       .where("userOwner",
           isEqualTo: Firestore.instance
@@ -51,6 +53,11 @@ class UserBloc implements Bloc {
       .snapshots();
   List<ProfilePlace> buildMyPlaces(List<DocumentSnapshot> placesListSnapshot) =>
       _cloudFirestoreRepository.buildMyPlaces(placesListSnapshot);
+
+  StreamController<Place> placeSelectedStreamController =
+      StreamController<Place>();
+  Stream<Place> get placeSelectedStream => placeSelectedStreamController.stream;
+  StreamSink<Place> get placeSelectedSink => placeSelectedStreamController.sink;
 
   final _firebaseStorageRepository = FirebaseStorageRepository();
   Future<StorageUploadTask> uploadFile(String path, File image) =>
@@ -61,7 +68,5 @@ class UserBloc implements Bloc {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-  }
+  void dispose() {}
 }

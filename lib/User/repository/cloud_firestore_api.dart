@@ -75,7 +75,7 @@ class CloudFirestoreAPI {
           likes: p.data["likes"]);
       List usersLikedRefs = p.data["usersLiked"];
       place.liked = false;
-      usersLikedRefs?.forEach((drUL) {
+      usersLikedRefs.forEach((drUL) {
         if (user.uid == drUL.documentID) {
           place.liked = true;
         }
